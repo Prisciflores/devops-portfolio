@@ -1,0 +1,4 @@
+# Cron job generado por Ansible para backup de configuración
+# Ejecuta el script de backup todos los días a las 2:00 AM
+0 2 * * * root bash {{ playbook_dir }}/files/backup_script.sh
+

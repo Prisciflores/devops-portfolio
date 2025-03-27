@@ -1,0 +1,17 @@
+backup_type: tar  # <-- Esto debes cambiar a "s3" para usar S3
+
+backup_items:
+  - /etc/hostname
+  - /etc/hosts
+
+# Lista de archivos a respaldar
+#
+backup_output_path: /tmp/backups
+backup_name_prefix: config-backup
+
+# Este ejemplo hará un respaldo de dos archivos comunes del sistema y lo guardará en /tmp/backups/ como config-backup-<fecha>.tar.gz.
+
+#variables para el bkp en s3
+#s3_bucket: nombre-del-bucket
+#s3_prefix: config-backup
+

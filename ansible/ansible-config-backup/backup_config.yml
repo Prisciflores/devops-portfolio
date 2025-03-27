@@ -1,0 +1,25 @@
+---
+- name: Backup de archivos de configuración
+  hosts: localhost
+  become: true
+  tasks:
+
+    - name: Ejecutar backup local
+      when: backup_type == "tar"
+      script: files/backup_script.sh
+
+        # - name: Ejecutar backup en S3
+        #when: backup_type == "s3"
+        #shell: |
+        #aws s3 cp /etc/hostname s3://{{ s3_bucket }}/{{ s3_prefix }}-hostname-{{ ansible_date_time.date }}.bak
+        #aws s3 cp /etc/hosts s3://{{ s3_bucket }}/{{ s3_prefix }}-hosts-{{ ansible_date_time.date }}.bak
+
+    - name: Configurar tarea cron para respaldo automático
+      when: backup_type == "tar"
+      template:
+        src: cron_job.j2
+        dest: /etc/cron.d/config_backup
+        owner: root
+        group: root
+        mode: '0644'
+

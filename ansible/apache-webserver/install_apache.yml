@@ -1,0 +1,17 @@
+---
+- name: Instala Apache en localhost
+  hosts: webservers
+  become: true
+
+  tasks:
+    - name: Instalar Apache
+      apt:
+        name: apache2
+        state: present
+        update_cache: yes
+
+    - name: Crear página de bienvenida
+      copy:
+        dest: /var/www/html/index.html
+        content: "<h1>Bienvenida al servidor Apache configurado con Ansible por Priscila</h1>"
+

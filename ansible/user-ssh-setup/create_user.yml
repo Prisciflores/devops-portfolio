@@ -1,0 +1,39 @@
+---
+- name: Crear usuario con acceso SSH
+  hosts: local
+  become: true
+
+  vars:
+    new_username: devopsuser
+    ssh_public_key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDw95TkYLkHtpdor80MmnifT2Yc74sDNUAeL40f18w+Sd5bZ1E01wUKkoly/p+N8cRitVVLOhEt95BpnplBLlkNnnqyHX8vLS2d++yUBopOHRDQU9RumZXhXRa7JAtmvN2Pu7vJz3YNE5In9ZrhJB1H8cR+67DHUGTPFM9w1EnMjXi/RoMeZXlJRYlhSC6iLmSw018zRbXxdNWcs5RnLf3FE5TZ+oylk8mkmCo//qr2i4dQU5s4ReCVkjkPISL14b2YrDzaA7ZZiLAdObs/BEXg5nlEGLgsXuoWdlrw0gGbi1ZymJ538cOQavCBYKEUsp0ZGSkVmsFnandswBvElShcZRKdorQ6MyhhNDX4lMVLWyn5SJYOApj1m2gn4Qnzqa4aAXyYp9a52PlzXET5CvJKxEb2IUWjbU0eVXgx/8rKxm+E4Sd6qRFXCzKkD0QKwMIb9hM5A0sgYB2N2vj9TJYFsUSsuD5Gzsn1fwt39EU2YzHjRLdnBxA58411AJhWY7Jna2I3KAKnoLvh2sOzP5VOUb02oLfb7ASRuJFHGVZsb/nNHI4qas0uIxxLvGF/H6pbpo/4mhL1SbM3/mTfxNr73hbzAxtpHbY+fFp8UUhM/zhDnX6WECEHjCOh1yL+b3A9+tnFh6riwaJcolMWeuigJRn2tGCh8bAn1a2+faBKaQ== priscielizabeth@gmail.com"
+
+  tasks:
+    - name: Crear usuario
+      user:
+        name: "{{ new_username }}"
+        shell: /bin/bash
+        state: present
+        create_home: yes
+
+    - name: Crear .ssh directory
+      file:
+        path: "/home/{{ new_username }}/.ssh"
+        state: directory
+        owner: "{{ new_username }}"
+        group: "{{ new_username }}"
+        mode: 0700
+
+    - name: Agregar clave pública
+      copy:
+        dest: "/home/{{ new_username }}/.ssh/authorized_keys"
+        content: "{{ ssh_public_key }}"
+        owner: "{{ new_username }}"
+        group: "{{ new_username }}"
+        mode: 0600
+
+    - name: Permitir sudo sin contraseña (opcional)
+      copy:
+        dest: "/etc/sudoers.d/{{ new_username }}"
+        content: "{{ new_username }} ALL=(ALL) NOPASSWD:ALL"
+        mode: 0440
+

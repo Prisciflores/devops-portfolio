@@ -11,6 +11,8 @@ Cada proyecto utiliza **Ansible** para resolver una necesidad específica de for
 |---------|-------------|
 | [`apache-webserver`](ansible/apache-webserver) | Automatiza la instalación de Apache y despliega una página de bienvenida personalizada. |
 | [`user-ssh-setup`](ansible/user-ssh-setup) | Crea un usuario con acceso SSH configurado y permisos de sudo. |
+| [ansible-linux-audit](ansible/ansible-linux-audit) | Audita un sistema Linux y genera un informe con información clave del sistema, usuarios, red, servicios y más. |
+
 
 ---
 

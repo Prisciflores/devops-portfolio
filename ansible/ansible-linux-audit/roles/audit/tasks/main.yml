@@ -1,0 +1,102 @@
+---
+- name: Recolectar facts del sistema
+  ansible.builtin.setup:
+
+### USO DE RECURSOS BÁSICOS
+- name: Obtener uso de disco
+  command: df -h
+  register: disk_usage
+
+- name: Obtener uso de memoria
+  command: free -m
+  register: memory_usage
+
+- name: Obtener información de red
+  command: ip a
+  register: network_info
+
+- name: Obtener uptime
+  command: uptime
+  register: uptime_info
+
+- name: Obtener procesos top por CPU
+  shell: ps aux --sort=-%cpu | head -n 5
+  register: top_cpu_processes
+
+- name: Obtener procesos top por memoria
+  shell: ps aux --sort=-%mem | head -n 5
+  register: top_mem_processes
+
+### USUARIOS
+- name: Listar usuarios del sistema
+  command: cat /etc/passwd
+  register: user_list
+
+- name: Ver usuarios con permisos sudo
+  command: getent group sudo
+  register: sudo_users
+
+### SERVICIOS
+- name: Obtener servicios activos
+  command: systemctl list-units --type=service --state=running
+  register: active_services
+
+- name: Ver estado del servicio sshd
+  command: systemctl status sshd
+  register: sshd_status
+  ignore_errors: yes
+
+- name: Ver estado del servicio nginx (si aplica)
+  command: systemctl status nginx
+  register: nginx_status
+  ignore_errors: yes
+
+### FIREWALL
+- name: Ver reglas de firewall con UFW
+  command: ufw status
+  register: firewall_ufw
+  ignore_errors: yes
+
+- name: Ver reglas de firewall con iptables
+  command: iptables -L
+  register: firewall_iptables
+  ignore_errors: yes
+
+### CRONTABS Y TAREAS PROGRAMADAS
+- name: Ver tareas en /etc/cron.*
+  shell: ls -lR /etc/cron.*
+  register: cron_system
+
+- name: Ver crontab del usuario actual
+  command: crontab -l
+  register: user_crontab
+  ignore_errors: yes
+
+### DIRECTORIOS CRÍTICOS
+- name: Ver espacio usado en /var/log, /home y /tmp
+  shell: du -sh /var/log /home /tmp
+  register: critical_dirs
+
+### SEGURIDAD BÁSICA
+- name: Últimos intentos de login fallidos
+  shell: grep "Failed password" /var/log/auth.log | tail -n 10
+  register: failed_logins
+  ignore_errors: yes
+
+### PAQUETES
+- name: Listar paquetes instalados (Debian)
+  command: dpkg -l
+  register: installed_packages
+  when: ansible_facts['os_family'] == 'Debian'
+
+- name: Ver paquetes actualizables (Debian)
+  command: apt list --upgradable
+  register: upgradable_packages
+  when: ansible_facts['os_family'] == 'Debian'
+  ignore_errors: yes
+
+- name: Generar informe con Jinja2
+  template:
+    src: report.txt.j2
+    dest: /tmp/linux_audit_report.txt
+

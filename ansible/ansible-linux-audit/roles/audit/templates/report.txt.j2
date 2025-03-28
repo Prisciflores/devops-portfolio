@@ -1,0 +1,110 @@
+Informe de Auditoría del Sistema Linux
+=======================================
+
+📅 Fecha: {{ ansible_date_time.date }} {{ ansible_date_time.time }}
+
+🖥️ Información del Sistema
+---------------------------
+- Hostname: {{ ansible_hostname }}
+- Sistema Operativo: {{ ansible_distribution }} {{ ansible_distribution_version }}
+- Kernel: {{ ansible_kernel }}
+- Arquitectura: {{ ansible_architecture }}
+- Uptime: {{ uptime_info.stdout }}
+
+💽 Uso de Disco
+---------------
+{{ disk_usage.stdout }}
+
+🧠 Memoria RAM
+--------------
+{{ memory_usage.stdout }}
+
+🧮 Procesos por uso de CPU
+--------------------------
+{{ top_cpu_processes.stdout }}
+
+🧮 Procesos por uso de Memoria
+------------------------------
+{{ top_mem_processes.stdout }}
+
+🌐 Información de Red
+---------------------
+{{ network_info.stdout }}
+
+👥 Usuarios del Sistema
+-----------------------
+{{ user_list.stdout }}
+
+🔐 Usuarios con Permisos Sudo
+-----------------------------
+{{ sudo_users.stdout }}
+
+🔄 Servicios Activos
+--------------------
+{{ active_services.stdout }}
+
+⚙️ Estado del Servicio sshd
+----------------------------
+{% if sshd_status.stdout %}
+{{ sshd_status.stdout }}
+{% else %}
+sshd no está instalado o no se encontró en este sistema.
+{% endif %}{% if sshd_status.stdout %}
+{{ sshd_status.stdout }}
+{% else %}
+sshd no está instalado o no se encontró en este sistema.
+{% endif %}
+
+⚙️ Estado del Servicio nginx
+----------------------------
+{% if nginx_status.stdout %}
+{{ nginx_status.stdout }}
+{% else %}
+nginx no está instalado o no se encontró en este sistema.
+{% endif %}
+
+🔥 Reglas de Firewall (UFW)
+---------------------------
+{% if firewall_ufw.stdout %}
+{{ firewall_ufw.stdout }}
+{% else %}
+No se encontró UFW en este sistema.
+{% endif %}
+
+🔥 Reglas de Firewall (iptables)
+--------------------------------
+{% if firewall_iptables.stdout %}
+{{ firewall_iptables.stdout }}
+{% else %}
+No se encontró iptables en este sistema.
+{% endif %}
+
+⏱ Crontab del Usuario Actual
+-----------------------------
+{% if user_crontab.stdout %}
+{{ user_crontab.stdout }}
+{% else %}
+El usuario actual no tiene tareas crontab.
+{% endif %}
+
+⏰ Tareas Programadas en /etc/cron.*
+-----------------------------------
+{{ cron_system.stdout }}
+
+📁 Espacio Usado en Directorios Críticos
+----------------------------------------
+{{ critical_dirs.stdout }}
+
+🚨 Intentos Fallidos de Login
+-----------------------------
+{{ failed_logins.stdout }}
+
+📦 Paquetes Instalados
+----------------------
+{{ installed_packages.stdout }}
+
+⬆️ Paquetes Disponibles para Actualizar
+---------------------------------------
+{{ upgradable_packages.stdout }}
+
+

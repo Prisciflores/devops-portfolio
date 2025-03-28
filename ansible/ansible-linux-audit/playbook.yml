@@ -1,0 +1,7 @@
+---
+- name: Auditoría de sistema Linux
+  hosts: servers
+  become: true
+  roles:
+    - audit
+

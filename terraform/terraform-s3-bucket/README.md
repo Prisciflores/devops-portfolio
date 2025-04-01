@@ -23,6 +23,7 @@ Este proyecto crea un bucket de Amazon S3 con las siguientes configuraciones:
 terraform init
 terraform plan -var="bucket_name=mi-nombre-de-bucket"
 terraform apply -var="bucket_name=mi-nombre-de-bucket"
+```
 
 > ⚠️ Recordar que el nombre del bucket debe ser único a nivel global en S3.
 
@@ -39,12 +40,11 @@ terraform apply -var="bucket_name=mi-nombre-de-bucket"
 
 ## Estructura del proyecto
 
-```text
+```
 terraform-s3-bucket/
 ├── main.tf          # Define el recurso S3 y su configuración
 ├── variables.tf     # Variables de entrada
 ├── outputs.tf       # Salidas del recurso
 ├── .gitignore       # Archivos ignorados por Git
 └── README.md        # Descripción del proyecto
-```
 

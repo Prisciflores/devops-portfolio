@@ -1,0 +1,12 @@
+# Carpeta generada por Terraform al hacer "init"
+.terraform/
+
+# Archivos de estado que contienen la info de los recursos creados
+terraform.tfstate
+terraform.tfstate.backup
+
+# Archivo de bloqueo para mantener versiones coherentes de proveedores
+.terraform.lock.hcl
+
+# Variables sensibles si las defines en un archivo aparte
+*.tfvars

@@ -22,3 +22,17 @@ variable "availability_zone" {
 variable "project_name" {
   default = "multi-module-demo"
 }
+
+# AMI por defecto para us-east-1 (Amazon Linux 2)
+variable "ami_id" {
+  description = "AMI ID para la instancia EC2"
+  type        = string
+  default     = "ami-0c02fb55956c7d316"  # Amazon Linux 2 en us-east-1
+}
+
+# Tipo de instancia EC2
+variable "instance_type" {
+  description = "Tipo de instancia EC2"
+  type        = string
+  default     = "t2.micro"
+}
